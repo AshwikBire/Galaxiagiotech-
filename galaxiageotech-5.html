@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Galaxiageotech — Data Science, AI &amp; Full Stack Training</title>
+<meta name="description" content="Live online certification training in Data Science, AI, Data Analytics, Full Stack, Python, Java &amp; Web Development. Pune-based, industry-expert led.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0f14;
+    --bg2:#111c22;
+    --bg3:#16232b;
+    --glass:rgba(255,255,255,0.05);
+    --glass-strong:rgba(255,255,255,0.09);
+    --glass-border:rgba(255,255,255,0.13);
+    --violet:#2dd4bf;
+    --cyan:#38bdf8;
+    --pink:#fb7185;
+    --emerald:#facc15;
+    --whatsapp:#25d366;
+    --text:#f4f7f5;
+    --text-dim:#a9b8b4;
+    --text-faint:#697b76;
+    --display:'Space Grotesk',sans-serif;
+    --body:'Plus Jakarta Sans',sans-serif;
+    --mono:'JetBrains Mono',monospace;
+    --radius:20px;
+    --nav-h:76px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:radial-gradient(ellipse 120% 80% at 20% -10%, #163a3a 0%, var(--bg) 45%),
+               radial-gradient(ellipse 100% 60% at 100% 10%, #2b2410 0%, transparent 50%),
+               var(--bg);
+    color:var(--text);
+    font-family:var(--body);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  img{max-width:100%;display:block;}
+  ::selection{background:var(--violet);color:#fff;}
+  :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:4px;}
+
+  h1,h2,h3,h4{font-family:var(--display);font-weight:600;letter-spacing:-0.02em;}
+  .eyebrow{
+    font-family:var(--mono);font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;
+    color:var(--cyan);display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;
+  }
+  .eyebrow::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);}
+  .section{padding:120px calc(6vw + env(safe-area-inset-right)) 120px calc(6vw + env(safe-area-inset-left));position:relative;}
+  .section-head{max-width:640px;margin-bottom:56px;}
+  .section-head h2{font-size:clamp(2rem,4vw,2.8rem);}
+  .section-head p{color:var(--text-dim);margin-top:14px;font-size:1.05rem;line-height:1.6;}
+  .container{max-width:1280px;margin:0 auto;}
+
+  /* Ambient canvas */
+  #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.55;}
+
+  /* Blobs */
+  .blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:0.35;z-index:0;pointer-events:none;}
+  .blob-1{width:480px;height:480px;background:var(--violet);top:-100px;left:-150px;animation:float1 22s ease-in-out infinite;}
+  .blob-2{width:420px;height:420px;background:var(--cyan);top:200px;right:-160px;animation:float2 26s ease-in-out infinite;}
+  .blob-3{width:380px;height:380px;background:var(--pink);bottom:-120px;left:30%;animation:float1 30s ease-in-out infinite reverse;}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(60px,40px) scale(1.1);}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-50px,60px) scale(0.95);}}
+
+  /* Progress bar */
+  #progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--violet),var(--cyan),var(--pink));width:0%;z-index:1000;transition:width 0.1s linear;}
+
+  /* Navbar */
+  #navbar{
+    position:fixed;top:0;left:0;right:0;z-index:900;
+    min-height:var(--nav-h);display:flex;align-items:center;
+    padding:env(safe-area-inset-top) calc(6vw + env(safe-area-inset-right)) 0 calc(6vw + env(safe-area-inset-left));
+    transition:background .35s,backdrop-filter .35s,border-color .35s,height .35s;
+    border-bottom:1px solid transparent;
+  }
+  #navbar.scrolled{
+    background:rgba(10,15,20,0.6);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);
+    border-bottom:1px solid var(--glass-border);min-height:64px;
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1280px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:1.15rem;}
+  .logo-mark{width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .logo-mark svg{width:100%;height:100%;overflow:visible;}
+  .logo-mark .orbit{animation:spin-slow 14s linear infinite;transform-origin:20px 20px;}
+  @keyframes spin-slow{to{transform:rotate(360deg);}}
+  .nav-links{display:flex;gap:2px;position:relative;background:var(--glass);border:1px solid var(--glass-border);border-radius:999px;padding:5px;backdrop-filter:blur(12px);}
+  .nav-links a{position:relative;padding:9px 18px;font-size:0.88rem;font-weight:500;color:var(--text-dim);border-radius:999px;z-index:2;transition:color .25s;white-space:nowrap;}
+  .nav-links a.active{color:var(--bg);}
+  #nav-pill{position:absolute;top:5px;height:calc(100% - 10px);border-radius:999px;background:linear-gradient(120deg,var(--cyan),var(--violet));z-index:1;transition:left .4s cubic-bezier(.65,0,.35,1),width .4s cubic-bezier(.65,0,.35,1);}
+  .nav-cta{display:flex;align-items:center;gap:14px;}
+  .btn{
+    font-weight:600;font-size:0.88rem;padding:11px 22px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;
+    transition:transform .25s,box-shadow .25s,background .25s;white-space:nowrap;
+  }
+  .btn-primary{background:linear-gradient(120deg,var(--violet),var(--cyan));color:#fff;box-shadow:0 8px 24px -8px rgba(139,92,246,0.6);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px -8px rgba(139,92,246,0.8);}
+  .btn-glass{background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(10px);}
+  .btn-glass:hover{background:var(--glass-strong);transform:translateY(-2px);}
+  .hamburger{display:none;width:40px;height:40px;border-radius:10px;background:var(--glass);border:1px solid var(--glass-border);align-items:center;justify-content:center;position:relative;z-index:1200;}
+  .hamburger span{position:absolute;width:18px;height:2px;background:var(--text);transition:all .3s;}
+  .hamburger span:nth-child(1){transform:translateY(-6px);}
+  .hamburger span:nth-child(3){transform:translateY(6px);}
+  .hamburger.open span:nth-child(1){transform:rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:rotate(-45deg);}
+
+  /* Mobile menu */
+  #mobile-menu{
+    position:fixed;inset:0;background:rgba(10,15,20,0.92);backdrop-filter:blur(24px);
+    z-index:1100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    opacity:0;pointer-events:none;transition:opacity .35s;
+  }
+  #mobile-menu.open{opacity:1;pointer-events:auto;}
+  #mobile-menu a{font-family:var(--display);font-size:1.6rem;padding:14px 0;opacity:0;transform:translateY(16px);transition:all .4s;}
+  #mobile-menu.open a{opacity:1;transform:translateY(0);}
+
+  /* Hero */
+  .hero{min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:calc(140px + env(safe-area-inset-top)) calc(6vw + env(safe-area-inset-right)) 80px calc(6vw + env(safe-area-inset-left));position:relative;z-index:1;}
+  .hero-grid{display:grid;grid-template-columns:1fr;gap:24px;max-width:820px;margin:0 auto;width:100%;text-align:center;}
+  .hero h1{font-size:clamp(2.4rem,5.2vw,4.1rem);line-height:1.05;}
+  .hero h1 .grad{background:linear-gradient(120deg,var(--violet),var(--cyan) 55%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p.lead{margin:22px auto 0;font-size:1.1rem;color:var(--text-dim);max-width:560px;line-height:1.65;}
+  .hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;justify-content:center;}
+  .hero-tags{display:flex;gap:10px;margin-top:38px;flex-wrap:wrap;justify-content:center;}
+  .tag{font-family:var(--mono);font-size:0.75rem;padding:6px 12px;border-radius:8px;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
+
+  /* Liquid glass card generic */
+  .glass{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--radius);
+    backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+    position:relative;overflow:hidden;
+  }
+  .glass::before{
+    content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
+    background:linear-gradient(140deg,rgba(255,255,255,0.35),rgba(255,255,255,0) 40%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+  }
+
+
+  /* Stats */
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--glass-border);border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;max-width:1280px;margin:0 auto;position:relative;z-index:1;}
+  .stat{background:rgba(10,15,20,0.55);backdrop-filter:blur(14px);padding:32px 20px;text-align:center;}
+  .stat .num{font-family:var(--display);font-size:2.1rem;background:linear-gradient(120deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat .lbl{font-family:var(--mono);font-size:0.72rem;color:var(--text-dim);margin-top:6px;letter-spacing:0.04em;}
+
+  /* Courses */
+  .filter-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;}
+  .filter-tab{padding:9px 20px;border-radius:999px;border:1px solid var(--glass-border);background:var(--glass);font-size:0.85rem;font-weight:600;color:var(--text-dim);transition:all .25s;}
+  .filter-tab.active{background:linear-gradient(120deg,var(--violet),var(--cyan));color:#fff;border-color:transparent;}
+  .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
+  .course-card{padding:28px;transition:transform .35s,box-shadow .35s;cursor:pointer;display:flex;flex-direction:column;gap:14px;}
+  .course-card:hover{transform:translateY(-8px);box-shadow:0 24px 48px -18px rgba(0,0,0,0.5);}
+  .course-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--glass-strong);}
+  .course-icon svg{width:26px;height:26px;}
+  .course-card h3{font-size:1.25rem;}
+  .course-card p{color:var(--text-dim);font-size:0.92rem;line-height:1.55;flex-grow:1;}
+  .course-meta{display:flex;gap:14px;font-family:var(--mono);font-size:0.72rem;color:var(--text-faint);}
+  .course-card .btn{margin-top:6px;align-self:flex-start;font-size:0.8rem;padding:9px 18px;}
+  .course-card[data-cat="programming"] .course-icon svg{color:var(--cyan);}
+  .course-card[data-cat="data"] .course-icon svg{color:var(--violet);}
+  .course-card[data-cat="web"] .course-icon svg{color:var(--pink);}
+  .fade-out{opacity:0;transform:scale(0.95);pointer-events:none;position:absolute;}
+
+  /* Features */
+  .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;}
+  .feature-card{padding:26px;}
+  .feature-card .n{font-family:var(--mono);color:var(--text-faint);font-size:0.78rem;}
+  .feature-card h4{margin-top:10px;font-size:1.1rem;}
+  .feature-card p{margin-top:8px;color:var(--text-dim);font-size:0.9rem;line-height:1.55;}
+
+  /* Process */
+  .process-list{display:flex;flex-direction:column;gap:0;}
+  .process-item{display:grid;grid-template-columns:80px 1fr;gap:24px;padding:28px 0;border-bottom:1px solid var(--glass-border);}
+  .process-item:last-child{border-bottom:none;}
+  .process-item .idx{font-family:var(--mono);font-size:0.85rem;color:var(--cyan);}
+  .process-item h4{font-size:1.15rem;margin-bottom:6px;}
+  .process-item p{color:var(--text-dim);font-size:0.92rem;}
+
+  /* Enrollment form */
+  .enroll-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+  .form-card{padding:36px;}
+  .field{margin-bottom:20px;position:relative;}
+  .field label{display:block;font-size:0.82rem;font-weight:600;margin-bottom:8px;color:var(--text-dim);}
+  .field input,.field select,.field textarea{
+    width:100%;padding:13px 16px;border-radius:12px;background:rgba(255,255,255,0.04);
+    border:1px solid var(--glass-border);color:var(--text);font-family:var(--body);font-size:0.95rem;transition:border-color .25s,background .25s;
+  }
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan);background:rgba(255,255,255,0.07);outline:none;}
+  .field.error input,.field.error select{border-color:var(--pink);animation:shake .35s;}
+  .field .err-msg{display:none;color:var(--pink);font-size:0.76rem;margin-top:6px;font-family:var(--mono);}
+  .field.error .err-msg{display:block;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  #enroll-success{display:none;text-align:center;padding:40px 20px;}
+  #enroll-success.show{display:block;}
+  #enroll-form.hide{display:none;}
+  .checkmark{width:64px;height:64px;margin:0 auto 18px;}
+  .checkmark circle{stroke:var(--emerald);stroke-width:2;fill:none;stroke-dasharray:166;stroke-dashoffset:166;animation:draw .6s ease forwards;}
+  .checkmark path{stroke:var(--emerald);stroke-width:3;fill:none;stroke-dasharray:48;stroke-dashoffset:48;animation:draw .4s .5s ease forwards;}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .side-info{display:flex;flex-direction:column;gap:18px;}
+  .info-card{padding:22px;display:flex;gap:16px;align-items:flex-start;}
+  .info-card .ic{width:42px;height:42px;border-radius:10px;background:var(--glass-strong);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .info-card h5{font-size:0.95rem;margin-bottom:4px;}
+  .info-card p{color:var(--text-dim);font-size:0.85rem;line-height:1.5;}
+
+  /* Contact / footer */
+  footer{padding:70px calc(6vw + env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) calc(6vw + env(safe-area-inset-left));position:relative;z-index:1;border-top:1px solid var(--glass-border);}
+  .footer-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:40px;max-width:1280px;margin:0 auto;}
+  .footer-grid h5{font-size:0.85rem;color:var(--text-dim);margin-bottom:14px;letter-spacing:0.04em;}
+  .footer-grid a,.footer-grid p{color:var(--text-dim);font-size:0.9rem;line-height:2;}
+  .footer-grid a:hover{color:var(--cyan);}
+  .footer-bottom{max-width:1280px;margin:40px auto 0;padding-top:24px;border-top:1px solid var(--glass-border);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--text-faint);}
+
+  /* Back to top */
+  #back-top{position:fixed;bottom:calc(154px + env(safe-area-inset-bottom));right:calc(24px + env(safe-area-inset-right));width:46px;height:46px;border-radius:50%;z-index:800;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;}
+  #back-top.show{opacity:1;pointer-events:auto;}
+  #back-top:hover{transform:translateY(-4px);}
+
+  /* WhatsApp float button */
+  #wa-toggle{position:fixed;bottom:calc(90px + env(safe-area-inset-bottom));right:calc(24px + env(safe-area-inset-right));width:52px;height:52px;border-radius:50%;background:var(--whatsapp);z-index:800;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px -6px rgba(37,211,102,0.7);}
+  #wa-toggle svg{width:26px;height:26px;fill:#fff;}
+  #wa-toggle::after{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid var(--whatsapp);opacity:0.5;animation:pulse 2.4s infinite;}
+
+  /* Map */
+  .map-card{padding:0;overflow:hidden;}
+  .map-card iframe{width:100%;height:220px;border:0;filter:grayscale(0.3) invert(0.92) contrast(0.9);display:block;}
+  .map-foot{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+  .map-foot p{font-size:0.82rem;color:var(--text-dim);}
+
+  /* Instructors */
+  .instructor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:22px;}
+  .instructor-card{padding:26px;text-align:center;}
+  .avatar{width:64px;height:64px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:1.2rem;background:linear-gradient(135deg,var(--violet),var(--cyan));color:#06201c;}
+  .instructor-card h4{font-size:1.02rem;}
+  .instructor-card .role{font-family:var(--mono);font-size:0.72rem;color:var(--cyan);margin-top:4px;}
+  .instructor-card p{color:var(--text-dim);font-size:0.85rem;margin-top:10px;line-height:1.5;}
+
+  /* Testimonials */
+  .testi-track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;}
+  .testi-track::-webkit-scrollbar{height:6px;}
+  .testi-track::-webkit-scrollbar-thumb{background:var(--glass-border);border-radius:6px;}
+  .testi-card{min-width:300px;max-width:340px;padding:26px;scroll-snap-align:start;display:flex;flex-direction:column;gap:14px;}
+  .stars{color:var(--emerald);font-size:0.9rem;letter-spacing:2px;}
+  .testi-card p.quote{color:var(--text-dim);font-size:0.9rem;line-height:1.6;flex-grow:1;}
+  .testi-who{display:flex;align-items:center;gap:12px;}
+  .testi-who .avatar{width:40px;height:40px;font-size:0.8rem;margin:0;}
+  .testi-who .name{font-size:0.85rem;font-weight:600;}
+  .testi-who .track{font-size:0.72rem;color:var(--text-faint);font-family:var(--mono);}
+  .testi-nav{display:flex;gap:10px;margin-top:20px;}
+  .testi-nav button{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+
+  /* Batches table */
+  .batch-table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:var(--radius);}
+  .batch-table th,.batch-table td{padding:16px 20px;text-align:left;font-size:0.87rem;}
+  .batch-table th{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.06em;color:var(--text-faint);text-transform:uppercase;border-bottom:1px solid var(--glass-border);}
+  .batch-table td{border-bottom:1px solid var(--glass-border);color:var(--text-dim);}
+  .batch-table tr:last-child td{border-bottom:none;}
+  .seat-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:0.75rem;}
+  .seat-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--emerald);}
+  .seat-badge.low::before{background:var(--pink);}
+
+  /* FAQ */
+  .faq-list{display:flex;flex-direction:column;gap:14px;}
+  .faq-item{overflow:hidden;}
+  .faq-q{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-weight:600;font-size:0.95rem;}
+  .faq-q .plus{width:22px;height:22px;flex-shrink:0;position:relative;transition:transform .3s;}
+  .faq-q .plus::before,.faq-q .plus::after{content:'';position:absolute;background:var(--cyan);border-radius:2px;}
+  .faq-q .plus::before{width:14px;height:2px;top:10px;left:4px;}
+  .faq-q .plus::after{width:2px;height:14px;top:4px;left:10px;transition:opacity .3s;}
+  .faq-item.open .plus{transform:rotate(180deg);}
+  .faq-item.open .plus::after{opacity:0;}
+  .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+  .faq-a p{padding:0 24px 20px;color:var(--text-dim);font-size:0.87rem;line-height:1.6;}
+
+  /* Newsletter strip */
+  .newsletter{padding:52px 6vw;position:relative;z-index:1;}
+  .news-inner{max-width:1280px;margin:0 auto;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;}
+  .news-inner h3{font-size:1.4rem;}
+  .news-inner p{color:var(--text-dim);font-size:0.88rem;margin-top:6px;}
+  .news-form{display:flex;gap:10px;flex-wrap:wrap;}
+  .news-form input{padding:12px 16px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);color:var(--text);min-width:220px;}
+  #news-ok{display:none;color:var(--emerald);font-family:var(--mono);font-size:0.8rem;}
+
+  /* Chatbot */
+  #chat-toggle{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));right:calc(24px + env(safe-area-inset-right));width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--cyan));z-index:800;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px -6px rgba(139,92,246,0.7);}
+  #chat-toggle::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--cyan);opacity:0.5;animation:pulse 2.4s infinite;}
+  @keyframes pulse{0%{transform:scale(0.9);opacity:0.6;}70%{transform:scale(1.25);opacity:0;}100%{opacity:0;}}
+  #chat-panel{
+    position:fixed;bottom:calc(96px + env(safe-area-inset-bottom));right:calc(24px + env(safe-area-inset-right));width:340px;max-width:88vw;height:460px;max-height:70vh;z-index:850;
+    display:flex;flex-direction:column;border-radius:20px;overflow:hidden;
+    transform:translateY(20px) scale(0.96);opacity:0;pointer-events:none;transition:all .3s cubic-bezier(.34,1.56,.64,1);
+    background:rgba(9,14,18,0.85);backdrop-filter:blur(24px) saturate(160%);border:1px solid var(--glass-border);
+  }
+  #chat-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto;}
+  .chat-header{padding:16px 18px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;gap:10px;}
+  .chat-header .dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);box-shadow:0 0 8px var(--emerald);}
+  .chat-header h4{font-size:0.95rem;}
+  .chat-header span{font-size:0.72rem;color:var(--text-dim);}
+  .chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
+  .msg{max-width:82%;padding:10px 14px;border-radius:14px;font-size:0.85rem;line-height:1.45;}
+  .msg.bot{background:var(--glass-strong);border:1px solid var(--glass-border);align-self:flex-start;border-bottom-left-radius:4px;}
+  .msg.user{background:linear-gradient(120deg,var(--violet),var(--cyan));color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+  .msg.typing{display:flex;gap:4px;padding:14px;}
+  .msg.typing span{width:6px;height:6px;border-radius:50%;background:var(--text-dim);animation:typing 1s infinite;}
+  .msg.typing span:nth-child(2){animation-delay:.15s;}
+  .msg.typing span:nth-child(3){animation-delay:.3s;}
+  @keyframes typing{0%,60%,100%{opacity:0.3;}30%{opacity:1;}}
+  .chat-quick{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 10px;}
+  .chip{font-size:0.72rem;padding:6px 12px;border-radius:999px;background:var(--glass);border:1px solid var(--glass-border);color:var(--text-dim);}
+  .chip:hover{color:var(--cyan);border-color:var(--cyan);}
+  .chat-input{display:flex;gap:8px;padding:14px;border-top:1px solid var(--glass-border);}
+  .chat-input input{flex:1;padding:10px 14px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);color:var(--text);font-size:0.85rem;}
+  .chat-input button{width:38px;height:38px;border-radius:10px;background:linear-gradient(120deg,var(--violet),var(--cyan));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;scroll-behavior:auto !important;}
+  }
+
+  /* Tablet landscape / small laptop */
+  @media (max-width:1080px){
+    .section{padding-left:5vw;padding-right:5vw;}
+    .hero-grid{gap:40px;}
+  }
+
+  /* Tablet portrait and below: nav collapses, layouts stack */
+  @media (max-width:980px){
+    .nav-links{display:none;}
+    .hamburger{display:flex;}
+    .hero-grid{grid-template-columns:1fr;}
+    .enroll-wrap{grid-template-columns:1fr;}
+    .stats-bar{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr;gap:32px;}
+    .nav-cta .btn-glass{display:none;}
+    .course-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));}
+  }
+
+  /* Large phones / small tablets */
+  @media (max-width:768px){
+    .section{padding-top:96px;padding-bottom:96px;}
+    .section-head h2{font-size:clamp(1.7rem,5vw,2.2rem);}
+    .hero{padding-bottom:60px;}
+    .hero h1{font-size:clamp(2.1rem,7vw,2.8rem);}
+    .hero p.lead{font-size:1rem;}
+    .stat{padding:24px 14px;}
+    .stat .num{font-size:clamp(1.5rem,5vw,2.1rem);}
+    .form-row{grid-template-columns:1fr;}
+    .instructor-grid,.feature-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));}
+    .news-inner{flex-direction:column;align-items:flex-start;text-align:left;padding:32px;}
+    .news-form{width:100%;}
+    .news-form input{min-width:0;flex:1;}
+    .process-item{grid-template-columns:56px 1fr;gap:16px;}
+  }
+
+  /* Phones */
+  @media (max-width:600px){
+    .section{padding-left:5vw;padding-right:5vw;}
+    .stats-bar{grid-template-columns:repeat(2,1fr);border-radius:16px;}
+    .stat{padding:20px 10px;}
+    .stat .lbl{font-size:0.64rem;}
+    .course-grid,.instructor-grid,.feature-grid{grid-template-columns:1fr;}
+    .filter-tabs{gap:8px;}
+    .filter-tab{padding:8px 14px;font-size:0.8rem;}
+    .form-card{padding:24px 20px;}
+    .info-card{padding:18px;}
+    .batch-table{min-width:560px;}
+    .testi-card{min-width:82vw;max-width:82vw;}
+    .footer-bottom{flex-direction:column;align-items:flex-start;gap:6px;}
+  }
+
+  @media (max-width:520px){
+    .section{padding-top:80px;padding-bottom:80px;}
+    .hero{padding-top:calc(112px + env(safe-area-inset-top));padding-bottom:50px;}
+    .hero-tags{gap:8px;}
+    .hero-cta{gap:10px;}
+    .btn{padding:10px 18px;font-size:0.84rem;}
+    #chat-panel{right:calc(10px + env(safe-area-inset-right));bottom:calc(88px + env(safe-area-inset-bottom));width:calc(100vw - 20px);max-width:none;}
+    #chat-toggle{right:calc(16px + env(safe-area-inset-right));}
+    #wa-toggle{right:calc(16px + env(safe-area-inset-right));bottom:calc(84px + env(safe-area-inset-bottom));}
+    #back-top{right:calc(16px + env(safe-area-inset-right));bottom:calc(146px + env(safe-area-inset-bottom));}
+    .map-card iframe{height:180px;}
+  }
+
+  /* Very small phones (SE, older Android, folded foldables) */
+  @media (max-width:380px){
+    .logo{font-size:1rem;gap:8px;}
+    .logo-mark{width:30px;height:30px;}
+    .hamburger{width:36px;height:36px;}
+    .eyebrow{font-size:0.68rem;}
+    .hero h1{font-size:clamp(1.8rem,8vw,2.4rem);}
+    .tag{font-size:0.68rem;padding:5px 10px;}
+    .stats-bar{grid-template-columns:1fr 1fr;}
+    .form-card{padding:18px 16px;}
+    .news-inner{padding:24px;}
+  }
+
+  /* Short / landscape viewports (phones rotated) */
+  @media (max-height:520px) and (orientation:landscape){
+    .hero{min-height:auto;padding-top:calc(96px + env(safe-area-inset-top));padding-bottom:32px;}
+    #chat-panel{height:80vh;max-height:80vh;}
+    .section{padding-top:64px;padding-bottom:64px;}
+  }
+
+  /* High-resolution / large desktop: keep line lengths comfortable */
+  @media (min-width:1600px){
+    .container{max-width:1360px;}
+    .hero-grid{max-width:1360px;}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div id="progress-bar"></div>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo"><span class="logo-mark"><svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="logoGrad1" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2dd4bf"/><stop offset="55%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#fb7185"/></linearGradient></defs><g class="orbit"><circle cx="20" cy="20" r="16" stroke="url(#logoGrad1)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="64 36" fill="none"/><circle cx="34" cy="9" r="2.6" fill="#facc15"/></g><circle cx="20" cy="20" r="7" fill="url(#logoGrad1)"/></svg></span> Galaxiageotech</a>
+    <div class="nav-links" id="nav-links">
+      <div id="nav-pill"></div>
+      <a href="#home" data-target="home" class="active">Home</a>
+      <a href="#courses" data-target="courses">Courses</a>
+      <a href="#why-us" data-target="why-us">Why Us</a>
+      <a href="#reviews" data-target="reviews">Reviews</a>
+      <a href="#faq" data-target="faq">FAQ</a>
+      <a href="#enroll" data-target="enroll">Enroll</a>
+      <a href="#contact" data-target="contact">Contact</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#enroll" class="btn btn-glass">Get Started</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div id="mobile-menu">
+  <a href="#home" data-target="home">Home</a>
+  <a href="#courses" data-target="courses">Courses</a>
+  <a href="#why-us" data-target="why-us">Why Us</a>
+  <a href="#instructors" data-target="instructors">Instructors</a>
+  <a href="#reviews" data-target="reviews">Reviews</a>
+  <a href="#process" data-target="process">Process</a>
+  <a href="#faq" data-target="faq">FAQ</a>
+  <a href="#enroll" data-target="enroll">Enroll</a>
+  <a href="#contact" data-target="contact">Contact</a>
+</div>
+
+<section class="hero" id="home">
+  <div class="blob blob-1"></div><div class="blob blob-2"></div>
+  <div class="hero-grid">
+    <div>
+      <div class="eyebrow">Live online · Pune, India</div>
+      <h1>Launch your career in <span class="grad">Data Science &amp; AI</span></h1>
+      <p class="lead">Industry-led, live online certification training in Data Science, Artificial Intelligence, Data Analytics, Full Stack &amp; core programming — no prior coding experience required.</p>
+      <div class="hero-cta">
+        <a href="#enroll" class="btn btn-primary">Start Enrollment →</a>
+        <a href="#courses" class="btn btn-glass">Explore Courses</a>
+      </div>
+      <div class="hero-tags">
+        <span class="tag">4-MONTH TRACKS</span>
+        <span class="tag">LIVE MENTORSHIP</span>
+        <span class="tag">CAREER SUPPORT</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar reveal">
+  <div class="stat"><div class="num">7+</div><div class="lbl">CERTIFICATION TRACKS</div></div>
+  <div class="stat"><div class="num">4 MO</div><div class="lbl">AVG. DURATION</div></div>
+  <div class="stat"><div class="num">100%</div><div class="lbl">LIVE ONLINE</div></div>
+  <div class="stat"><div class="num">0</div><div class="lbl">PRIOR EXPERIENCE NEEDED</div></div>
+</div>
+
+<section class="section" id="courses">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Curriculum</div>
+      <h2>Pick your track</h2>
+      <p>From foundational programming to advanced AI — every course is built for beginners and taught live by industry practitioners.</p>
+    </div>
+    <div class="filter-tabs reveal">
+      <button class="filter-tab active" data-filter="all">All Courses</button>
+      <button class="filter-tab" data-filter="data">Data &amp; AI</button>
+      <button class="filter-tab" data-filter="programming">Programming</button>
+      <button class="filter-tab" data-filter="web">Web Development</button>
+    </div>
+    <div class="course-grid reveal" id="course-grid"></div>
+  </div>
+</section>
+
+<section class="section" id="why-us">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Why Galaxiageotech</div>
+      <h2>Built for people starting from zero</h2>
+      <p>Everything is designed to take a complete beginner to job-ready, with real mentorship along the way.</p>
+    </div>
+    <div class="feature-grid" id="feature-grid"></div>
+  </div>
+</section>
+
+<section class="section" id="instructors">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Meet the team</div>
+      <h2>Learn from people who've shipped the work</h2>
+      <p>Every track is led by a mentor with hands-on industry experience — not just teaching theory.</p>
+    </div>
+    <div class="instructor-grid" id="instructor-grid"></div>
+  </div>
+</section>
+
+<section class="section" id="batches">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Live schedule</div>
+      <h2>Upcoming batches</h2>
+      <p>Seats are limited per cohort to keep mentorship close. Reserve early.</p>
+    </div>
+    <div class="glass reveal" style="padding:8px 20px;overflow-x:auto;">
+      <table class="batch-table" id="batch-table">
+        <thead><tr><th>Course</th><th>Starts</th><th>Mode</th><th>Seats</th><th></th></tr></thead>
+        <tbody id="batch-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">How it works</div>
+      <h2>From enquiry to certification</h2>
+    </div>
+    <div class="process-list glass reveal" style="padding:0 32px;" id="process-list"></div>
+  </div>
+</section>
+
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Student outcomes</div>
+      <h2>What learners say</h2>
+    </div>
+    <div class="testi-track reveal" id="testi-track"></div>
+    <div class="testi-nav">
+      <button class="glass btn-glass" id="testi-prev" aria-label="Previous">←</button>
+      <button class="glass btn-glass" id="testi-next" aria-label="Next">→</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Questions</div>
+      <h2>Frequently asked</h2>
+    </div>
+    <div class="faq-list" id="faq-list"></div>
+  </div>
+</section>
+
+<section class="section" id="enroll">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Automation · Smart Enrollment</div>
+      <h2>Reserve your seat</h2>
+      <p>Fill this out and we'll confirm your batch by email &amp; phone. Fields validate as you type — no back-and-forth needed.</p>
+    </div>
+    <div class="enroll-wrap">
+      <div class="glass form-card reveal">
+        <form id="enroll-form" novalidate>
+          <div class="form-row">
+            <div class="field" data-field="name">
+              <label for="f-name">Full name</label>
+              <input type="text" id="f-name" placeholder="Your name">
+              <div class="err-msg">Please enter your full name.</div>
+            </div>
+            <div class="field" data-field="phone">
+              <label for="f-phone">Phone number</label>
+              <input type="tel" id="f-phone" placeholder="10-digit number">
+              <div class="err-msg">Enter a valid 10-digit phone number.</div>
+            </div>
+          </div>
+          <div class="field" data-field="email">
+            <label for="f-email">Email address</label>
+            <input type="email" id="f-email" placeholder="you@example.com">
+            <div class="err-msg">Enter a valid email address.</div>
+          </div>
+          <div class="form-row">
+            <div class="field" data-field="course">
+              <label for="f-course">Course</label>
+              <select id="f-course">
+                <option value="">Select a course</option>
+              </select>
+              <div class="err-msg">Please select a course.</div>
+            </div>
+            <div class="field" data-field="level">
+              <label for="f-level">Experience level</label>
+              <select id="f-level">
+                <option value="Beginner">Beginner — no experience</option>
+                <option value="Some">Some experience</option>
+                <option value="Intermediate">Intermediate+</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-msg">Message (optional)</label>
+            <textarea id="f-msg" rows="3" placeholder="Anything we should know?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px;">Submit application</button>
+        </form>
+        <div id="enroll-success">
+          <svg class="checkmark" viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l7 7 17-17"/></svg>
+          <h3>You're on the list!</h3>
+          <p style="color:var(--text-dim);margin-top:8px;font-size:0.9rem;">We'll reach out within 24 hours to confirm your batch timing.</p>
+          <button class="btn btn-glass" id="enroll-reset" style="margin-top:20px;">Submit another response</button>
+        </div>
+      </div>
+      <div class="side-info reveal">
+        <div class="glass map-card">
+          <iframe id="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=Marathe+Palace+482%2FC+Shaniwar+Peth+Sakal+Press+Chowk+Pune+411030&output=embed"></iframe>
+          <div class="map-foot">
+            <p>Office No. 04, Marathe Palace, 482/C Shaniwar Peth, Sakal Press Chowk, Pune – 411030</p>
+            <a class="btn btn-glass" style="font-size:0.78rem;padding:8px 14px;" id="map-directions" target="_blank" rel="noopener"
+              href="https://www.google.com/maps/dir/?api=1&destination=Marathe+Palace+482%2FC+Shaniwar+Peth+Sakal+Press+Chowk+Pune+411030">Get directions →</a>
+          </div>
+        </div>
+        <div class="glass info-card">
+          <div class="ic">💬</div>
+          <div><h5>Chat on WhatsApp</h5><p>Get instant answers about batches &amp; fees.</p>
+            <a class="btn btn-glass" id="wa-quick" style="margin-top:10px;font-size:0.78rem;padding:8px 14px;" target="_blank" rel="noopener">Message us →</a>
+          </div>
+        </div>
+        <div class="glass info-card">
+          <div class="ic">✉️</div>
+          <div><h5>Email us</h5><p>galaxiageotech@gmail.com</p>
+            <a class="btn btn-glass" id="email-quick" style="margin-top:10px;font-size:0.78rem;padding:8px 14px;">Send an email →</a>
+          </div>
+        </div>
+        <div class="glass info-card">
+          <div class="ic">📞</div>
+          <div><h5>Call for course info</h5><p>+91 7038264984</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter">
+  <div class="glass news-inner reveal">
+    <div>
+      <h3>Get batch updates by email</h3>
+      <p>New batch dates, seat openings and free workshops — no spam.</p>
+    </div>
+    <form class="news-form" id="news-form">
+      <input type="email" id="news-email" placeholder="you@example.com" required>
+      <button type="submit" class="btn btn-primary">Notify me</button>
+      <span id="news-ok">✓ You're subscribed!</span>
+    </form>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <a href="#home" class="logo"><span class="logo-mark"><svg viewBox="0 0 40 40" fill="none"><defs><linearGradient id="logoGrad2" x1="2" y1="2" x2="38" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#2dd4bf"/><stop offset="55%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#fb7185"/></linearGradient></defs><g class="orbit"><circle cx="20" cy="20" r="16" stroke="url(#logoGrad2)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="64 36" fill="none"/><circle cx="34" cy="9" r="2.6" fill="#facc15"/></g><circle cx="20" cy="20" r="7" fill="url(#logoGrad2)"/></svg></span> Galaxiageotech</a>
+      <p style="margin-top:14px;max-width:320px;">Live online certification training in Data Science, AI &amp; programming — from Pune, for learners everywhere.</p>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <a href="#courses">Courses</a><br>
+      <a href="#why-us">Why Us</a><br>
+      <a href="#process">Process</a><br>
+      <a href="#enroll">Enroll</a>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <p>Pune, Maharashtra</p>
+      <a href="mailto:galaxiageotech@gmail.com">galaxiageotech@gmail.com</a><br>
+      <a href="tel:+917038264984">+91 7038264984</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Galaxiageotech. All rights reserved.</span>
+    <span>Privacy Policy · Terms &amp; Conditions · Disclaimer</span>
+  </div>
+</footer>
+
+<button id="back-top" class="glass" aria-label="Back to top">↑</button>
+
+<a id="wa-toggle" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5C10 9 9.4 7.6 9.1 7c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 2-1.4.2-.7.2-1.2.1-1.4-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.9-1.3c1.5.8 3.2 1.3 5.1 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.3.9.9-3.2-.2-.3C3.6 14.3 3.1 12.7 3.1 11 3.1 6.6 6.6 3.1 11 3.1c4.4 0 8 3.5 8 7.9s-3.6 7-8 7z"/></svg>
+</a>
+<button id="chat-toggle" aria-label="Open course assistant">💬</button>
+<div id="chat-panel">
+  <div class="chat-header">
+    <div class="dot"></div>
+    <div><h4>Course Assistant</h4><span>Usually replies instantly</span></div>
+  </div>
+  <div class="chat-body" id="chat-body"></div>
+  <div class="chat-quick" id="chat-quick">
+    <span class="chip" data-q="I want to learn AI">AI</span>
+    <span class="chip" data-q="Tell me about Data Science">Data Science</span>
+    <span class="chip" data-q="How long are the courses?">Duration</span>
+    <span class="chip" data-q="I'm a complete beginner">I'm a beginner</span>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chat-input" placeholder="Ask about a course...">
+    <button id="chat-send" aria-label="Send">➤</button>
+  </div>
+</div>
+
+<script>
+/* ---------- Course data (single source of truth) ---------- */
+const ICONS = {
+  code:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 4L2 12l6 8M16 4l6 8-6 8"/></svg>',
+  brain:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4a3 3 0 00-3 3v1a3 3 0 00-2 5 3 3 0 002 5v1a3 3 0 003 3M15 4a3 3 0 013 3v1a3 3 0 012 5 3 3 0 01-2 5v1a3 3 0 01-3 3M9 4v16M15 4v16"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>',
+  layers:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18 14 14 0 010-18z"/></svg>',
+  cup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h13v7a6 6 0 01-12 0V4zM17 8h2a2 2 0 010 4h-2M8 20h6"/></svg>'
+};
+const COURSES = [
+  {id:'python',name:'Python Programming',cat:'programming',icon:'code',
+    desc:'Master core Python — the foundation for data science, automation, and backend development.',
+    meta:'4 months · Live'},
+  {id:'datascience',name:'Data Science',cat:'data',icon:'chart',
+    desc:'Statistics, Python, Pandas, visualization &amp; real-world case studies to become a working data scientist.',
+    meta:'4 months · Live'},
+  {id:'ai',name:'Artificial Intelligence',cat:'data',icon:'brain',
+    desc:'Machine learning fundamentals, neural networks and applied AI projects, taught from the ground up.',
+    meta:'4 months · Live'},
+  {id:'ml',name:'Machine Learning',cat:'data',icon:'brain',
+    desc:'Supervised &amp; unsupervised learning, model evaluation and deployment — hands-on with real datasets.',
+    meta:'3 months · Live'},
+  {id:'analytics',name:'Data Analytics',cat:'data',icon:'layers',
+    desc:'Excel, SQL, Power BI/Tableau and analytical thinking to turn raw data into business decisions.',
+    meta:'3 months · Live'},
+  {id:'fullstack',name:'Full Stack Development',cat:'web',icon:'globe',
+    desc:'HTML, CSS, JavaScript, a backend framework and databases — ship complete web applications.',
+    meta:'5 months · Live'},
+  {id:'webdev',name:'Web Development',cat:'web',icon:'globe',
+    desc:'HTML, CSS &amp; JavaScript fundamentals — build responsive, modern websites from scratch.',
+    meta:'2 months · Live'},
+  {id:'java',name:'Java Programming',cat:'programming',icon:'cup',
+    desc:'Object-oriented programming with Java — syntax to application development, industry style.',
+    meta:'3 months · Live'}
+];
+const FEATURES = [
+  {n:'No prerequisites',t:'Zero coding experience needed',d:'Every track starts from first principles — you don\'t need any prior background to enroll.'},
+  {n:'Live, not recorded',t:'Real-time instructor access',d:'All classes run live online so you can ask questions and get feedback in the moment.'},
+  {n:'Industry-led',t:'Taught by working practitioners',d:'Instructors bring real project experience from data science and software roles.'},
+  {n:'Career support',t:'Guidance beyond the syllabus',d:'Resume, portfolio and interview preparation built into every track.'}
+];
+const PROCESS = [
+  {t:'Tell us your goal',d:'Chat with the assistant, WhatsApp us, or submit the enrollment form with your course of interest.'},
+  {t:'Get a call back',d:'Our team confirms batch timing, fees and answers any questions within 24 hours.'},
+  {t:'Join the live batch',d:'Start learning with a small cohort, live instructor sessions and hands-on projects.'},
+  {t:'Get certified',d:'Complete your capstone project and receive your certification plus career guidance.'}
+];
+const INSTRUCTORS = [
+  {i:'RN',n:'Rhea Naik',r:'Lead Data Science Mentor',b:'8+ yrs building ML pipelines in fintech; leads the Data Science &amp; AI tracks.'},
+  {i:'AK',n:'Arjun Kulkarni',r:'Full Stack Engineer',b:'Ships production web apps; mentors the Full Stack &amp; Web Development cohorts.'},
+  {i:'SP',n:'Sana Pillai',r:'Analytics &amp; BI Lead',b:'Former analytics consultant; focuses on SQL, dashboards and business storytelling.'},
+  {i:'VD',n:'Vikram Deshmukh',r:'Java &amp; Backend Mentor',b:'Enterprise Java developer bringing real-world OOP practice into the classroom.'}
+];
+const TESTIMONIALS = [
+  {n:'Priya S.',c:'Data Science',q:'I started with zero coding background. Four months later I was building my own ML projects with real confidence.'},
+  {n:'Rohit M.',c:'Full Stack Development',q:'The live sessions made all the difference — getting instant feedback beats any recorded course.'},
+  {n:'Ananya J.',c:'Data Analytics',q:'Practical, dashboard-heavy curriculum. I use what I learned here at my job every single day.'},
+  {n:'Karan T.',c:'Artificial Intelligence',q:'Mentors actually work in the field. The projects felt like real work, not just assignments.'}
+];
+const BATCHES = [
+  {c:'Data Science',d:'Aug 25, 2026',m:'Live Online',seats:'6 left',low:true},
+  {c:'Artificial Intelligence',d:'Sep 1, 2026',m:'Live Online',seats:'12 left',low:false},
+  {c:'Full Stack Development',d:'Sep 8, 2026',m:'Live Online',seats:'9 left',low:false},
+  {c:'Data Analytics',d:'Sep 15, 2026',m:'Live Online',seats:'4 left',low:true},
+  {c:'Python Programming',d:'Sep 22, 2026',m:'Live Online',seats:'15 left',low:false}
+];
+const FAQS = [
+  {q:'Do I need any coding experience to join?',a:'No. Every track is designed for complete beginners and builds up from first principles.'},
+  {q:'Are classes live or pre-recorded?',a:'All classes are live online with direct instructor access, so you can ask questions in real time. Sessions are recorded for revision.'},
+  {q:'What do I need to get started?',a:'A laptop and a stable internet connection — we\'ll guide you through any software setup on day one.'},
+  {q:'Will I get a certificate?',a:'Yes, you receive a certification on completing your capstone project for the track you enroll in.'},
+  {q:'How do I pick the right course?',a:'Use the chat assistant in the bottom-right corner, or message us on WhatsApp — we\'ll recommend a track based on your goals.'}
+];
+
+/* ---------- Render courses ---------- */
+const grid = document.getElementById('course-grid');
+function renderCourses(filter){
+  grid.innerHTML = '';
+  COURSES.filter(c=>filter==='all'||c.cat===filter).forEach(c=>{
+    const el = document.createElement('div');
+    el.className = 'glass course-card reveal in';
+    el.dataset.cat = c.cat;
+    el.innerHTML = `
+      <div class="course-icon">${ICONS[c.icon]}</div>
+      <h3>${c.name}</h3>
+      <p>${c.desc}</p>
+      <div class="course-meta"><span>${c.meta}</span></div>
+      <button class="btn btn-glass" data-course="${c.id}">Enroll in this →</button>`;
+    grid.appendChild(el);
+  });
+  grid.querySelectorAll('[data-course]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const course = COURSES.find(c=>c.id===btn.dataset.course);
+      document.getElementById('f-course').value = course.name;
+      document.getElementById('enroll').scrollIntoView({behavior:'smooth'});
+    });
+  });
+}
+renderCourses('all');
+document.querySelectorAll('.filter-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    renderCourses(tab.dataset.filter);
+  });
+});
+
+/* Populate course select */
+const courseSelect = document.getElementById('f-course');
+COURSES.forEach(c=>{
+  const opt = document.createElement('option');
+  opt.value = c.name; opt.textContent = c.name;
+  courseSelect.appendChild(opt);
+});
+
+/* Render features */
+const fg = document.getElementById('feature-grid');
+FEATURES.forEach((f,i)=>{
+  const el = document.createElement('div');
+  el.className = 'glass feature-card reveal';
+  el.innerHTML = `<div class="n">0${i+1}</div><h4>${f.t}</h4><p>${f.d}</p>`;
+  fg.appendChild(el);
+});
+
+/* Render process */
+const pl = document.getElementById('process-list');
+PROCESS.forEach((p,i)=>{
+  const el = document.createElement('div');
+  el.className = 'process-item';
+  el.innerHTML = `<div class="idx">0${i+1}</div><div><h4>${p.t}</h4><p>${p.d}</p></div>`;
+  pl.appendChild(el);
+});
+
+/* Render instructors */
+const ig = document.getElementById('instructor-grid');
+INSTRUCTORS.forEach(p=>{
+  const el = document.createElement('div');
+  el.className = 'glass instructor-card reveal';
+  el.innerHTML = `<div class="avatar">${p.i}</div><h4>${p.n}</h4><div class="role">${p.r}</div><p>${p.b}</p>`;
+  ig.appendChild(el);
+});
+
+/* Render batches */
+const bb = document.getElementById('batch-body');
+BATCHES.forEach(row=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${row.c}</td><td>${row.d}</td><td>${row.m}</td>
+    <td><span class="seat-badge ${row.low?'low':''}">${row.seats}</span></td>
+    <td><button class="btn btn-glass" style="font-size:0.75rem;padding:7px 14px;" data-batch-course="${row.c}">Reserve →</button></td>`;
+  bb.appendChild(tr);
+});
+bb.querySelectorAll('[data-batch-course]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const sel = document.getElementById('f-course');
+    [...sel.options].forEach(o=>{ if(o.value===btn.dataset.batchCourse) sel.value=o.value; });
+    document.getElementById('enroll').scrollIntoView({behavior:'smooth'});
+  });
+});
+
+/* Render testimonials */
+const tt = document.getElementById('testi-track');
+TESTIMONIALS.forEach(t=>{
+  const el = document.createElement('div');
+  el.className = 'glass testi-card';
+  el.innerHTML = `<div class="stars">★★★★★</div><p class="quote">"${t.q}"</p>
+    <div class="testi-who"><div class="avatar">${t.n.split(' ').map(x=>x[0]).join('')}</div>
+    <div><div class="name">${t.n}</div><div class="track">${t.c}</div></div></div>`;
+  tt.appendChild(el);
+});
+document.getElementById('testi-prev').addEventListener('click',()=>tt.scrollBy({left:-330,behavior:'smooth'}));
+document.getElementById('testi-next').addEventListener('click',()=>tt.scrollBy({left:330,behavior:'smooth'}));
+
+/* Render FAQ */
+const faqList = document.getElementById('faq-list');
+FAQS.forEach(f=>{
+  const el = document.createElement('div');
+  el.className = 'glass faq-item';
+  el.innerHTML = `<div class="faq-q"><span>${f.q}</span><span class="plus"></span></div>
+    <div class="faq-a"><p>${f.a}</p></div>`;
+  const q = el.querySelector('.faq-q');
+  const a = el.querySelector('.faq-a');
+  q.addEventListener('click',()=>{
+    const isOpen = el.classList.contains('open');
+    faqList.querySelectorAll('.faq-item').forEach(item=>{
+      item.classList.remove('open');
+      item.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      el.classList.add('open');
+      a.style.maxHeight = a.scrollHeight + 'px';
+    }
+  });
+  faqList.appendChild(el);
+});
+
+/* ---------- WhatsApp + Email automation ---------- */
+const WA_NUMBER = '917038264984';
+function waLink(message){
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+function currentCourse(){
+  const v = document.getElementById('f-course').value;
+  return v || null;
+}
+function refreshQuickLinks(){
+  const course = currentCourse();
+  const waMsg = course
+    ? `Hi Galaxiageotech! I'm interested in the ${course} course. Can you share batch details?`
+    : `Hi Galaxiageotech! I'd like to know more about your courses.`;
+  document.getElementById('wa-toggle').href = waLink(waMsg);
+  document.getElementById('wa-quick').href = waLink(waMsg);
+  const emailSubject = course ? `Enquiry: ${course} course` : 'Course enquiry';
+  const emailBody = course
+    ? `Hi Galaxiageotech,%0D%0A%0D%0AI'm interested in the ${course} course. Please share the next batch date and fee details.%0D%0A%0D%0AThanks!`
+    : `Hi Galaxiageotech,%0D%0A%0D%0AI'd like to know more about your courses. Please share more details.%0D%0A%0D%0AThanks!`;
+  document.getElementById('email-quick').href = `mailto:galaxiageotech@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${emailBody}`;
+}
+refreshQuickLinks();
+document.getElementById('f-course').addEventListener('change', refreshQuickLinks);
+
+/* Newsletter (front-end demo, in-memory only) */
+const newsForm = document.getElementById('news-form');
+newsForm.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  const email = document.getElementById('news-email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+  document.getElementById('news-email').style.display='none';
+  newsForm.querySelector('button').style.display='none';
+  document.getElementById('news-ok').style.display='inline';
+});
+
+/* ---------- Nav: scroll spy + sliding pill ---------- */
+const navLinks = document.querySelectorAll('#nav-links a');
+const pill = document.getElementById('nav-pill');
+function movePill(link){
+  if(!link) return;
+  pill.style.left = link.offsetLeft + 'px';
+  pill.style.width = link.offsetWidth + 'px';
+}
+window.addEventListener('load',()=>movePill(document.querySelector('#nav-links a.active')));
+window.addEventListener('resize',()=>movePill(document.querySelector('#nav-links a.active')));
+
+const sections = ['home','courses','why-us','instructors','batches','process','reviews','faq','enroll','contact'].map(id=>document.getElementById(id));
+const spy = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = entry.target.id;
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const active = document.querySelector(`#nav-links a[data-target="${id}"]`);
+      if(active){active.classList.add('active');movePill(active);}
+    }
+  });
+},{rootMargin:'-45% 0px -45% 0px'});
+sections.forEach(s=>s && spy.observe(s));
+
+/* Navbar background on scroll + progress bar */
+const navbar = document.getElementById('navbar');
+const progressBar = document.getElementById('progress-bar');
+const backTop = document.getElementById('back-top');
+window.addEventListener('scroll',()=>{
+  const y = window.scrollY;
+  navbar.classList.toggle('scrolled', y>40);
+  backTop.classList.toggle('show', y>600);
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (h>0 ? (y/h)*100 : 0) + '%';
+});
+backTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+/* Mobile menu */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  hamburger.classList.remove('open'); mobileMenu.classList.remove('open');
+}));
+
+/* ---------- Reveal on scroll ---------- */
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObs.unobserve(e.target);} });
+},{threshold:0.15});
+revealEls.forEach(el=>revealObs.observe(el));
+
+/* ---------- Enrollment form validation ---------- */
+const form = document.getElementById('enroll-form');
+const successPanel = document.getElementById('enroll-success');
+function setError(fieldName, isError){
+  const field = form.querySelector(`[data-field="${fieldName}"]`);
+  if(field) field.classList.toggle('error', isError);
+}
+form.addEventListener('submit',(e)=>{
+  e.preventDefault();
+  let valid = true;
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const course = document.getElementById('f-course').value;
+
+  const nameOk = name.length > 1;
+  setError('name', !nameOk); if(!nameOk) valid=false;
+
+  const phoneOk = /^[0-9]{10}$/.test(phone.replace(/\D/g,''));
+  setError('phone', !phoneOk); if(!phoneOk) valid=false;
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  setError('email', !emailOk); if(!emailOk) valid=false;
+
+  const courseOk = course !== '';
+  setError('course', !courseOk); if(!courseOk) valid=false;
+
+  if(!valid) return;
+
+  form.classList.add('hide');
+  successPanel.classList.add('show');
+});
+document.getElementById('enroll-reset').addEventListener('click',()=>{
+  form.reset();
+  form.querySelectorAll('.field').forEach(f=>f.classList.remove('error'));
+  successPanel.classList.remove('show');
+  form.classList.remove('hide');
+});
+
+/* ---------- Chat assistant ---------- */
+const chatToggle = document.getElementById('chat-toggle');
+const chatPanel = document.getElementById('chat-panel');
+const chatBody = document.getElementById('chat-body');
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+let chatOpened = false;
+
+chatToggle.addEventListener('click',()=>{
+  chatPanel.classList.toggle('open');
+  if(!chatOpened){
+    chatOpened = true;
+    addMsg('bot',"Hi! I'm the Galaxiageotech course assistant. Tell me what you'd like to learn, or reach us directly:");
+    setTimeout(()=>{
+      const links = document.createElement('div');
+      links.className = 'msg bot';
+      links.innerHTML = `<a class="btn btn-glass" style="font-size:0.75rem;padding:7px 12px;margin-right:6px;" href="${document.getElementById('wa-toggle').href}" target="_blank" rel="noopener">WhatsApp us</a>
+        <a class="btn btn-glass" style="font-size:0.75rem;padding:7px 12px;" href="${document.getElementById('email-quick').href}">Email us</a>`;
+      chatBody.appendChild(links);
+    }, 400);
+  }
+});
+
+function addMsg(role,text){
+  const el = document.createElement('div');
+  el.className = 'msg ' + role;
+  el.innerHTML = text;
+  chatBody.appendChild(el);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function botTyping(reply){
+  const typing = document.createElement('div');
+  typing.className = 'msg bot typing';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+  chatBody.appendChild(typing);
+  chatBody.scrollTop = chatBody.scrollHeight;
+  setTimeout(()=>{
+    typing.remove();
+    addMsg('bot', reply);
+  }, 550 + Math.random()*400);
+}
+
+function recommend(query){
+  const q = query.toLowerCase();
+  if(/beginner|no experience|new to cod|never coded/.test(q)){
+    return "No problem — every one of our tracks assumes zero prior experience. Popular starting points are <b>Python Programming</b> or <b>Web Development</b>. Want me to open the enrollment form for one of these?";
+  }
+  if(/how long|duration|months|weeks/.test(q)){
+    return "Most tracks run <b>3–5 months</b>, live online. Web Development is the shortest (2 months), Full Stack the longest (5 months).";
+  }
+  if(/fee|price|cost|payment/.test(q)){
+    return "For current fees and any active discounts, the fastest path is a quick call: <b>+91 7038264984</b> or email <b>galaxiageotech@gmail.com</b>.";
+  }
+  for(const c of COURSES){
+    const keys = c.name.toLowerCase().split(' ').concat([c.id]);
+    if(keys.some(k=>k.length>2 && q.includes(k))){
+      return `Great choice — <b>${c.name}</b> is a ${c.meta.toLowerCase()} track. ${c.desc} Want me to pre-fill the enrollment form for you?`;
+    }
+  }
+  if(/course|option|offer|track/.test(q)){
+    return "We offer: " + COURSES.map(c=>c.name).join(', ') + ". Which one sounds closest to your goal?";
+  }
+  return "I can help you pick a track — try asking about Data Science, AI, Data Analytics, Full Stack, Web Development, Python or Java. You can also scroll to the Courses section below.";
+}
+
+function handleSend(text){
+  if(!text.trim()) return;
+  addMsg('user', text);
+  chatInput.value = '';
+  const reply = recommend(text);
+  botTyping(reply);
+
+  // If reply suggests prefilling, try to match a course and offer a shortcut
+  const matched = COURSES.find(c=>text.toLowerCase().includes(c.id) || text.toLowerCase().includes(c.name.toLowerCase().split(' ')[0]));
+  if(matched){
+    setTimeout(()=>{
+      const jump = document.createElement('div');
+      jump.className='msg bot';
+      jump.innerHTML = `<button class="btn btn-glass" style="padding:7px 14px;font-size:0.78rem;" onclick="document.getElementById('f-course').value='${matched.name}';document.getElementById('enroll').scrollIntoView({behavior:'smooth'});chatPanelClose();">Open enrollment form →</button>`;
+      chatBody.appendChild(jump);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }, 1100);
+  }
+}
+function chatPanelClose(){ chatPanel.classList.remove('open'); }
+window.chatPanelClose = chatPanelClose;
+
+chatSend.addEventListener('click',()=>handleSend(chatInput.value));
+chatInput.addEventListener('keydown',(e)=>{ if(e.key==='Enter') handleSend(chatInput.value); });
+document.querySelectorAll('.chip').forEach(chip=>{
+  chip.addEventListener('click',()=>handleSend(chip.dataset.q));
+});
+
+/* ---------- Ambient constellation canvas ---------- */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let w,h,particles=[];
+function resize(){
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = Math.min(window.innerHeight*1.1, 900);
+}
+resize();
+window.addEventListener('resize',resize);
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const count = reduceMotion ? 0 : Math.min(70, Math.floor(w/22));
+for(let i=0;i<count;i++){
+  particles.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3});
+}
+function tick(){
+  if(!reduceMotion){
+    ctx.clearRect(0,0,w,h);
+    for(const p of particles){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>w) p.vx*=-1;
+      if(p.y<0||p.y>h) p.vy*=-1;
+    }
+    ctx.fillStyle = 'rgba(180,190,255,0.55)';
+    for(const p of particles){
+      ctx.beginPath(); ctx.arc(p.x,p.y,1.4,0,Math.PI*2); ctx.fill();
+    }
+    ctx.strokeStyle = 'rgba(139,146,246,0.12)';
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const dist = Math.sqrt(dx*dx+dy*dy);
+        if(dist<120){
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+}
+tick();
+</script>
+</body>
+</html>
